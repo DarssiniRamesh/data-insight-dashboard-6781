@@ -1,82 +1,72 @@
-# Lightweight React Template for KAVIA
+# Data Insight Dashboard (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A classic, lightweight React dashboard that visualizes JSON data with charts and tables.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Heritage Brown theme with classic layout (Sidebar, Top Bar)
+- Routing: `/` Dashboard, `/table`, `/about`
+- Data loading via JSON upload or URL (with robust errors and loading states)
+- Charts (bar, line, pie) using Chart.js/react-chartjs-2, interactive tooltips/legend
+- Data table with sorting, per-column filtering, pagination, row detail modal, and filtered JSON export
+- Theme persistence via localStorage and `useTheme`
+- Accessible controls, responsive layout
 
 ## Getting Started
 
-In the project directory, you can run:
+1) Install dependencies
+   npm install
 
-### `npm start`
+2) Start the app
+   npm start
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open http://localhost:3000
 
-### `npm test`
+## Data Format
 
-Launches the test runner in interactive watch mode.
+Provide an array of objects:
+[
+  { "category": "A", "value": 12, "date": "2024-01-01" },
+  { "category": "B", "value": 5, "date": "2024-01-02" }
+]
 
-### `npm run build`
+The app will attempt simple normalization if your JSON contains a top-level "data" or "items" array.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Fields are auto-classified as:
+- numeric: mostly numeric values
+- categorical: other fields
 
-## Customization
+Use the Dashboard to pick X (categorical) and Y (numeric) fields for charts.
 
-### Colors
+## Loading Data
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+- Upload: Use "Load Data" and select a .json file
+- URL: Enter a full http(s) URL and click Fetch
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
+CORS note: When fetching from a URL, the remote server must allow CORS from your development origin (http://localhost:3000). If not, the browser will block the request.
 
-### Components
+## Accessibility
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+- Keyboard focus outlines for interactive components
+- ARIA labels for navigation and tables
+- Live regions for loading/error status
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+## Tech
 
-## Learn More
+- React 18 + React Router v6
+- Chart.js v4 + react-chartjs-2
+- No heavy CSS frameworks; styles via CSS variables and classic layout
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Project Structure (key parts)
 
-### Code Splitting
+- src/theme: CSS variables and useTheme
+- src/components/data: DataContext and DataLoader
+- src/components/charts: Bar/Line/Pie charts
+- src/components/tables: DataTable features
+- src/pages: Dashboard, Table, About
+- src/routes/Router.js: Routes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Troubleshooting
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Blank charts? Ensure you've selected X and Y fields and loaded data.
+- URL fetch fails? Check CORS on the target server and verify it returns valid JSON with proper content-type.

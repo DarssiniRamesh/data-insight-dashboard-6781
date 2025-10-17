@@ -1,0 +1,25 @@
+:root {
+  --primary: #92400E;
+  --primary-900: #4a1d09;
+  --primary-800: #6b2a0c;
+  --secondary: #FEF3C7;
+  --secondary-50: #FFFBEB;
+  --success: #059669;
+  --error: #DC2626;
+  --background: #FFFBEB;
+  --surface: #FFFFFF;
+  --text: #111827;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+}
+
+[data-theme="dark"] {
+  --background: #1f1b17;
+  --surface: #14110f;
+  --text: #f9fafb;
+  --border: #2a2623;
+  --secondary-50: #2a2623;
+}
+
+/* Focus visible defaults */
+:focus-visible { outline: 3px solid var(--secondary); outline-offset: 2px; }

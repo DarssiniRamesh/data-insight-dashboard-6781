@@ -9,3 +9,11 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+// Accessibility: allow skip to main if needed
+window.addEventListener('hashchange', () => {
+  if (window.location.hash === '#main-content') {
+    const el = document.getElementById('main-content');
+    if (el) el.focus();
+  }
+});

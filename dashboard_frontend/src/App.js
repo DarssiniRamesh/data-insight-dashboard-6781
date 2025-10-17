@@ -1,49 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { Suspense } from 'react';
 import './App.css';
+import './theme/theme.css';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './routes/Router';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
+import Spinner from './components/common/Spinner';
+import { DataProvider } from './components/data/DataContext';
+import { useTheme } from './theme/useTheme';
+import Sidebar from './components/layout/Sidebar';
+import TopBar from './components/layout/TopBar';
 
-// PUBLIC_INTERFACE
-function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+/**
+ * Root application shell with layout, theme, router, and data provider.
+ */
+function AppShell() {
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-shell" data-theme={theme}>
+      <aside className="sidebar" aria-label="Primary">
+        <Sidebar />
+      </aside>
+      <div className="main-area">
+        <TopBar onToggleTheme={toggleTheme} />
+        <main id="main-content" className="content" role="main" tabIndex="-1">
+          <ErrorBoundary>
+            <Suspense fallback={<Spinner label="Loading content..." />}>
+              <Router />
+            </Suspense>
+          </ErrorBoundary>
+        </main>
+      </div>
     </div>
   );
 }
 
-export default App;
+// PUBLIC_INTERFACE
+export default function App() {
+  /** App composed with BrowserRouter and DataProvider */
+  return (
+    <BrowserRouter>
+      <DataProvider>
+        <AppShell />
+      </DataProvider>
+    </BrowserRouter>
+  );
+}

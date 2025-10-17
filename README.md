@@ -1,1 +1,3 @@
-# data-insight-dashboard-6781
+# Project Repository
+
+This is the initial README file for the project.
